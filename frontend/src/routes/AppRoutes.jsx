@@ -22,6 +22,9 @@ const AppRoutes = () => {
           <Route path={ROUTES.SIGNUP} element={<Signup />} />
         </Route>
 
+        {/* Root Redirect */}
+        <Route path="/" element={<Navigate to={ROUTES.APP.BASE} replace />} />
+
         {/* Protected App Routes */}
         <Route path={ROUTES.APP.BASE} element={<ProtectedRoute />}>
           <Route element={<AppLayout />}>
