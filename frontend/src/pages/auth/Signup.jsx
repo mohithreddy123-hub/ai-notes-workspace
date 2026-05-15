@@ -12,9 +12,7 @@ const Signup = () => {
   const { signup } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const password = watch("password");
+  const { register, handleSubmit, getValues, formState: { errors } } = useForm();
 
   const onSubmit = async (data) => {
     setIsLoading(true);
@@ -115,7 +113,7 @@ const Signup = () => {
               placeholder="••••••••"
               error={errors.password_confirm?.message}
               {...register("password_confirm", { 
-                validate: value => value === password || "Passwords do not match"
+                validate: value => value === getValues("password") || "Passwords do not match"
               })}
             />
 
