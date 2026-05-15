@@ -22,7 +22,7 @@ class AIProvider:
 class GeminiClient:
     """Google Gemini AI integration using google-generativeai SDK."""
 
-    MODEL = 'gemini-1.5-flash'
+    MODEL = 'gemini-flash-latest'
 
     def __init__(self):
         import google.generativeai as genai
