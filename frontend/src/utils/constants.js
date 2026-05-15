@@ -9,9 +9,9 @@ export const API_ROUTES = {
     CHANGE_PASSWORD: '/auth/change-password/',
   },
   NOTES: {
-    BASE: '/notes/',
-    ARCHIVED: '/notes/archived/',
-    PINNED: '/notes/pinned/',
+    BASE: '/notes/notes/',
+    ARCHIVED: '/notes/notes/archived/',
+    PINNED: '/notes/notes/pinned/',
     TAGS: '/notes/tags/',
   },
   AI: {

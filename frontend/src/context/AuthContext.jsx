@@ -14,8 +14,7 @@ export const AuthProvider = ({ children }) => {
   const { 
     data: user, 
     isLoading: isProfileLoading, 
-    refetch,
-    remove: removeUserQuery 
+    refetch
   } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
@@ -36,10 +35,8 @@ export const AuthProvider = ({ children }) => {
       document.documentElement.classList.add(THEMES.DARK);
     }
 
-    if (!isProfileLoading) {
-      setIsInitializing(false);
-    }
-  }, [user, isProfileLoading]);
+    setIsInitializing(false);
+  }, []);
 
   const login = async (email, password) => {
     const response = await api.post(API_ROUTES.AUTH.LOGIN, { email, password });
@@ -81,7 +78,7 @@ export const AuthProvider = ({ children }) => {
     } finally {
       localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
       localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
-      removeUserQuery();
+      queryClient.setQueryData(['profile'], null);
       queryClient.clear();
       document.documentElement.classList.remove(THEMES.DARK);
     }
