@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ROUTES } from '../../utils/constants';
+import { ROUTES } from '../utils/constants';
 import {
   Brain, Sparkles, CheckCircle2, ArrowRight, Star,
   FileText, Tag, Share2, BarChart3, Zap, Lock,
