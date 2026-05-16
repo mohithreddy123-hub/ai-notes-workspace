@@ -111,7 +111,7 @@ const NavBar = () => (
         <div className="w-9 h-9 bg-brand-600 rounded-xl flex items-center justify-center shadow-md shadow-brand-500/30">
           <Brain className="w-5 h-5 text-white" />
         </div>
-        <span className="text-slate-900 font-display font-bold text-lg tracking-tight">AI Notes</span>
+        <span className="text-slate-900 font-display font-bold text-lg tracking-tight">MindNotes</span>
       </div>
       <div className="flex items-center gap-2">
         <Link to={ROUTES.LOGIN} className="text-sm font-medium text-slate-600 hover:text-slate-900 px-4 py-2 rounded-lg hover:bg-slate-100 transition-colors">
@@ -136,7 +136,7 @@ const HeroSection = () => (
       {/* Badge */}
       <div className="inline-flex items-center gap-2 bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold px-4 py-1.5 rounded-full mb-8">
         <Sparkles className="w-3.5 h-3.5" />
-        Powered by Google Gemini AI
+        Powered by Google Groq AI
       </div>
 
       <h1 className="text-5xl md:text-7xl font-display font-bold text-slate-900 leading-tight mb-6 tracking-tight">
@@ -147,7 +147,7 @@ const HeroSection = () => (
       </h1>
 
       <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed mb-10">
-        AI Notes Workspace automatically summarizes your notes, pulls out action items,
+        MindNotes automatically summarizes your notes, pulls out action items,
         and organizes everything — so your brain stays free to think.
       </p>
 
@@ -273,7 +273,7 @@ const FeaturesSection = () => (
         <p className="text-brand-600 text-sm font-semibold uppercase tracking-wider mb-3">Everything you need</p>
         <h2 className="text-4xl md:text-5xl font-display font-bold text-slate-900 mb-4">Built for how you actually think</h2>
         <p className="text-slate-500 text-lg max-w-2xl mx-auto">
-          No more copy-pasting into ChatGPT. AI Notes does it all inside your workspace.
+          No more copy-pasting into ChatGPT. MindNotes does it all inside your workspace.
         </p>
       </div>
 
@@ -394,9 +394,9 @@ const Footer = () => (
         <div className="w-6 h-6 bg-brand-600 rounded-md flex items-center justify-center">
           <Brain className="w-3.5 h-3.5 text-white" />
         </div>
-        <span className="text-slate-600 text-sm font-semibold">AI Notes Workspace</span>
+        <span className="text-slate-600 text-sm font-semibold">MindNotes</span>
       </div>
-      <p className="text-slate-400 text-xs">© 2026 AI Notes Workspace. Built with ❤️ and Gemini AI.</p>
+      <p className="text-slate-400 text-xs">© 2026 MindNotes. Built with ❤️ and Groq AI.</p>
       <div className="flex items-center gap-6">
         <Link to={ROUTES.LOGIN} className="text-slate-400 hover:text-slate-700 text-sm transition-colors">Sign in</Link>
         <Link to={ROUTES.SIGNUP} className="text-slate-400 hover:text-slate-700 text-sm transition-colors">Sign up</Link>
@@ -420,3 +420,4 @@ const LandingPage = () => (
 );
 
 export default LandingPage;
+

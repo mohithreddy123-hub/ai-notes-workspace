@@ -67,7 +67,7 @@ const AppLayout = () => {
             </div>
             {!isSidebarCollapsed && (
               <span className="font-display font-bold text-xl text-slate-900 dark:text-white tracking-tight truncate animate-fade-in">
-                AI Notes
+                MindNotes
               </span>
             )}
           </div>
@@ -160,7 +160,7 @@ const AppLayout = () => {
           >
             <Menu className="w-6 h-6" />
           </button>
-          <div className="font-display font-bold text-xl text-slate-900 dark:text-white tracking-tight">AI Notes</div>
+          <div className="font-display font-bold text-xl text-slate-900 dark:text-white tracking-tight">MindNotes</div>
           <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 animate-pulse" />
         </header>
 
@@ -174,3 +174,4 @@ const AppLayout = () => {
 };
 
 export default AppLayout;
+

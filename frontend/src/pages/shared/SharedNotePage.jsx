@@ -62,7 +62,7 @@ const SharedNotePage = () => {
             className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            Go to AI Notes
+            Go to MindNotes
           </Link>
         </div>
       </div>
@@ -82,7 +82,7 @@ const SharedNotePage = () => {
             className="flex items-center gap-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
           >
             <Brain className="w-5 h-5" />
-            <span>AI Notes Workspace</span>
+            <span>MindNotes</span>
           </Link>
 
           <button
@@ -190,7 +190,7 @@ const SharedNotePage = () => {
           <p className="text-sm text-slate-400 dark:text-slate-500">
             Shared via{' '}
             <Link to="/login" className="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
-              AI Notes Workspace
+              MindNotes
             </Link>
             {' '}· Built for productivity
           </p>
@@ -201,3 +201,4 @@ const SharedNotePage = () => {
 };
 
 export default SharedNotePage;
+
