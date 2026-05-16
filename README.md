@@ -1,239 +1,361 @@
-# AI Notes Workspace
+# 🧠 AI Notes Workspace
 
-A production-ready, intelligence-driven note-taking platform that transforms standard text into actionable insights using Google Gemini AI.
+> A production-grade, intelligence-driven note-taking SaaS application built with Django REST Framework and React. Transform your notes into actionable insights with Google Gemini AI.
 
----
-
-## 🚀 Key Features
-
-- **Intelligence-Driven Workflows**: 
-    - **Smart Summaries**: Distill long notes into 2-4 key sentences.
-    - **Action Item Extraction**: Automatically detect and list tasks from your writing.
-    - **Title Suggestions**: AI-generated titles based on note context.
-- **Productivity Analytics**: 
-    - Full dashboard with **Recharts** visualizations.
-    - Weekly activity heatmaps and note creation trends.
-    - AI usage tracking (tokens, latency, and request counts).
-- **Advanced Note Management**:
-    - Real-time **Auto-save** (debounced).
-    - Multi-tagging system with custom color coding.
-    - Pinning and Archiving for deep organization.
-- **Modern SaaS Experience**:
-    - Ultra-responsive UI built with **Tailwind CSS**.
-    - **Dark Mode** native support.
-    - Secure JWT authentication with token refreshing.
+[![Django](https://img.shields.io/badge/Django-5.0.6-green?style=flat-square&logo=django)](https://djangoproject.com)
+[![React](https://img.shields.io/badge/React-18-blue?style=flat-square&logo=react)](https://reactjs.org)
+[![Gemini AI](https://img.shields.io/badge/AI-Gemini-purple?style=flat-square&logo=google)](https://aistudio.google.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
 ---
 
-## 🛠️ Technology Stack & Installations
+## ✨ Features
 
-### Backend (Django REST Framework)
-- **Framework**: Django 5.0.6
-- **API**: Django REST Framework (DRF)
-- **AI Integration**: Google Generative AI SDK (`google-generativeai`)
-- **Database**: SQLite (Development), PostgreSQL ready via `dj-database-url`
-- **Auth**: SimpleJWT (JSON Web Tokens)
-- **CORS**: `django-cors-headers`
+| Feature | Description |
+|---|---|
+| 🤖 **AI Summarization** | Auto-generate 2-4 sentence summaries of any note using Gemini |
+| ✅ **Action Item Extraction** | Detect and list concrete tasks from your writing |
+| 💡 **AI Title Suggestion** | Get intelligent, context-aware title recommendations |
+| 📊 **Analytics Dashboard** | Visualize your productivity with weekly activity charts |
+| 🔗 **Public Sharing** | Share notes publicly with a unique, secure URL |
+| 🏷️ **Smart Tagging** | Organize with color-coded, searchable tags |
+| 📌 **Pin & Archive** | Keep important notes front-and-center |
+| 🌙 **Dark Mode** | Native dark/light mode with system preference detection |
+| 🔒 **JWT Auth** | Secure, stateless authentication with token refresh |
+| 💾 **Auto-Save** | Debounced auto-save on every keystroke |
 
-**Setup Commands:**
-```powershell
-# Create environment
-python -m venv venv
-venv\Scripts\activate
+---
 
-# Install Core Requirements
-pip install django djangorestframework django-cors-headers djangorestframework-simplejwt python-dotenv google-generativeai dj-database-url whitenoise
+## 🛠️ Technology Stack
 
-# Initialize Apps
-python manage.py startapp authentication
-python manage.py startapp notes
-python manage.py startapp ai_features
-python manage.py startapp analytics
-python manage.py startapp shared_notes
+### Backend
+| Technology | Purpose |
+|---|---|
+| **Django 5.0.6** | Core web framework |
+| **Django REST Framework** | REST API layer |
+| **SimpleJWT** | JWT-based authentication |
+| **Google Generative AI** | Gemini AI integration |
+| **WhiteNoise** | Static file serving in production |
+| **Gunicorn** | Production WSGI server |
+| **SQLite / PostgreSQL** | Dev / Production database |
+| **dj-database-url** | Database URL parsing |
+
+### Frontend
+| Technology | Purpose |
+|---|---|
+| **React 18** | UI library |
+| **Vite** | Ultra-fast build tool |
+| **Tailwind CSS** | Utility-first styling |
+| **TanStack React Query** | Server state management and caching |
+| **Axios** | HTTP client with interceptors |
+| **Recharts** | Analytics dashboard charts |
+| **Lucide React** | Icon system |
+| **React Hot Toast** | Notification system |
+| **date-fns** | Date formatting |
+
+---
+
+## 🏛️ Architecture Overview
+
 ```
-
-### Frontend (React + Vite)
-- **Framework**: React 18
-- **Build Tool**: Vite
-- **Styling**: Tailwind CSS
-- **Data Fetching**: TanStack React Query (v5)
-- **Charts**: Recharts
-- **Icons**: Lucide React
-- **Date Handling**: date-fns
-
-**Setup Commands:**
-```powershell
-# Initialize Project
-npm create vite@latest frontend -- --template react
-
-# Install Core Dependencies
-npm install axios react-router-dom @tanstack/react-query lucide-react recharts date-fns react-hot-toast
-
-# Install Tailwind
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
+[Browser] ──HTTPS──► [Netlify CDN] ──► [React SPA]
+                                              │
+                                         [Axios + JWT]
+                                              │
+                                         [Render/Railway]
+                                              │
+                                       [Django + DRF]
+                                              │
+                              ┌───────────────┴──────────────┐
+                         [PostgreSQL]               [Gemini AI API]
+                         (Production DB)            (AI Operations)
 ```
 
 ---
 
-## 📂 Project Structure (Exhaustive)
+## 📂 Project Structure
 
-### 🖥️ Frontend Architecture
-```text
+### 🖥️ Frontend (`/frontend`)
+```
 frontend/
 ├── src/
 │   ├── components/
 │   │   ├── notes/
-│   │   │   ├── NoteCard.jsx            # Component for note previews in the grid
-│   │   │   ├── NoteEditor.jsx          # Full-screen editor with AI Action toolbar
-│   │   │   ├── TagManager.jsx          # Global tag management interface
+│   │   │   ├── NoteCard.jsx            # Note preview card (grid/list view)
+│   │   │   ├── NoteEditor.jsx          # Full editor with AI toolbar & share
+│   │   │   ├── TagManager.jsx          # Tag creation and management UI
 │   │   │   └── TagSelector.jsx         # Inline tag picker with search
 │   │   ├── ui/
-│   │   │   ├── Button.jsx              # Custom styled button system
-│   │   │   ├── Card.jsx                # Layout cards for statistics
-│   │   │   ├── Feedback.jsx            # Skeleton loaders and error states
+│   │   │   ├── Button.jsx              # Reusable styled button system
+│   │   │   ├── Card.jsx                # Layout cards for stats/dashboard
+│   │   │   ├── Feedback.jsx            # Skeletons and error states
 │   │   │   ├── Input.jsx               # Controlled form inputs
-│   │   │   └── Modal.jsx               # Universal modal portal system
-│   │   ├── Sidebar.jsx              # Main navigation sidebar
-│   │   └── ErrorBoundary.jsx           # React Error Boundary for crash protection
+│   │   │   └── Modal.jsx               # Portal-based modal system
+│   │   ├── ErrorBoundary.jsx           # React crash protection
+│   │   └── Sidebar.jsx                 # Main navigation sidebar
 │   ├── context/
-│   │   └── AuthContext.jsx             # User session and preference management
+│   │   └── AuthContext.jsx             # Global auth + theme state
 │   ├── hooks/
 │   │   ├── useAI.js                    # AI mutation hooks (Summary/Actions/Title)
-│   │   ├── useAnalytics.js             # Data hooks for dashboard stats
-│   │   ├── useAutoSave.js              # Custom hook for debounced persistence
-│   │   └── useNotes.js                 # Unified hooks for Note/Tag CRUD
+│   │   ├── useAnalytics.js             # Dashboard statistics fetching
+│   │   ├── useAutoSave.js              # Debounced auto-save logic
+│   │   ├── useNotes.js                 # CRUD hooks for notes and tags
+│   │   └── useShare.js                 # Share/Unshare and public note hooks
 │   ├── layouts/
-│   │   └── AppLayout.jsx               # Shell layout with Sidebar and Main content
+│   │   └── AppLayout.jsx               # Shell with sidebar and outlet
 │   ├── pages/
 │   │   ├── auth/
-│   │   │   ├── Login.jsx               # User authentication entry
-│   │   │   └── Signup.jsx              # New user registration
+│   │   │   ├── Login.jsx               # Sign-in page
+│   │   │   └── Signup.jsx              # Registration page
 │   │   ├── dashboard/
-│   │   │   └── Dashboard.jsx           # Main Analytics & Productivity page
+│   │   │   └── Dashboard.jsx           # Analytics + productivity charts
 │   │   ├── notes/
-│   │   │   └── NotesList.jsx           # Workspace hub (Grid/List of notes)
-│   │   └── NotFound.jsx                # Custom 404 handler
+│   │   │   └── NotesList.jsx           # Main workspace (note grid)
+│   │   ├── shared/
+│   │   │   └── SharedNotePage.jsx      # Public read-only note view
+│   │   └── NotFound.jsx                # 404 handler
 │   ├── routes/
-│   │   ├── AppRoutes.jsx               # Route definition and navigation tree
-│   │   └── RouteWrappers.jsx           # ProtectedRoute & PublicRoute logic
+│   │   ├── AppRoutes.jsx               # Lazy-loaded route definitions
+│   │   └── RouteWrappers.jsx           # ProtectedRoute & PublicRoute
 │   ├── services/
-│   │   ├── aiService.js                # AI backend API interaction
-│   │   ├── analyticsService.js         # Statistics API interaction
-│   │   ├── api.js                      # Axios interceptor (Auth headers/Base URL)
-│   │   ├── notesService.js             # Core Notes/Tags API interaction
-│   │   └── authService.js              # Login/Signup API interaction
+│   │   ├── aiService.js                # AI endpoint communication
+│   │   ├── analyticsService.js         # Analytics API calls
+│   │   ├── api.js                      # Axios + JWT interceptor base
+│   │   ├── authService.js              # Auth API calls
+│   │   ├── notesService.js             # Notes/Tags API calls
+│   │   └── shareService.js             # Share/Unshare API calls
 │   ├── utils/
-│   │   └── constants.js                # App-wide API and URL constants
-│   ├── App.jsx                         # Main Component (Theme/Query Provider)
-│   ├── main.jsx                        # React DOM Entry
-│   └── index.css                       # Global Tailwind & Font styling
-├── eslint.config.js                    # Linting configuration
-├── index.html                          # Entry HTML file
+│   │   └── constants.js                # API routes and app constants
+│   ├── App.jsx                         # Root with providers
+│   ├── main.jsx                        # React DOM entry
+│   └── index.css                       # Global Tailwind + custom styles
+├── .env.example                        # Environment variable template
+├── index.html                          # SPA HTML entry
 ├── package.json                        # Dependencies and scripts
-├── postcss.config.js                   # CSS transformation config
-├── tailwind.config.js                  # Design tokens and theme config
-└── vite.config.js                      # Build and Proxy settings
+├── tailwind.config.js                  # Design system tokens
+└── vite.config.js                      # Build and proxy configuration
 ```
 
-### ⚙️ Backend Architecture
-```text
+### ⚙️ Backend (`/backend`)
+```
 backend/
-├── ai_features/                        # AI Orchestration Module
-│   ├── migrations/                     # Database version history
-│   │   ├── 0001_initial.py
-│   │   ├── 0002_initial.py
-│   │   └── __init__.py
-│   ├── __init__.py
-│   ├── apps.py                         # App configuration
+├── ai_features/                        # AI Intelligence Module
+│   ├── migrations/
 │   ├── models.py                       # AIUsageLog (token tracking, latency)
 │   ├── providers.py                    # Multi-provider client (Gemini/OpenAI)
 │   ├── serializers.py                  # AI usage history serialization
-│   ├── urls.py                         # AI action routing
-│   └── views.py                        # Summary/Action/Title logic
+│   ├── urls.py                         # AI action endpoint routing
+│   └── views.py                        # Summary / Actions / Title handlers
 ├── analytics/                          # Business Intelligence Module
-│   ├── __init__.py
-│   ├── apps.py
-│   ├── urls.py                         # Stats routing
-│   └── views.py                        # Dashboard aggregation logic
-├── authentication/                     # Identity Management
-│   ├── migrations/                     # Database version history
-│   │   ├── 0001_initial.py
-│   │   └── __init__.py
-│   ├── __init__.py
-│   ├── admin.py                        # Admin interface config
-│   ├── apps.py
-│   ├── models.py                       # Custom User (Preferences, Avatar, Bio)
-│   ├── serializers.py                  # Auth/Profile serialization
-│   ├── urls.py                         # JWT & Profile routing
-│   └── views.py                        # Login/Signup/Preference logic
+│   ├── urls.py                         # Statistics endpoint routing
+│   └── views.py                        # Dashboard data aggregation
+├── authentication/                     # Identity & Access Module
+│   ├── migrations/
+│   ├── models.py                       # Custom User (preferences, avatar, bio)
+│   ├── serializers.py                  # Auth / profile serialization
+│   ├── tests.py                        # Signup, login, auth tests
+│   ├── urls.py                         # JWT & profile routing
+│   └── views.py                        # Signup / Login / Profile handlers
 ├── notes/                              # Core Content Engine
-│   ├── migrations/                     # Database version history
-│   │   ├── 0001_initial.py
-│   │   └── __init__.py
-│   ├── __init__.py
-│   ├── admin.py
-│   ├── apps.py
-│   ├── filters.py                      # Advanced filtering (Status, Tags, Search)
-│   ├── models.py                       # Note and Tag database schemas
-│   ├── serializers.py                  # Nested Note/Tag serialization
-│   ├── urls.py                         # Workspace routing
-│   └── views.py                        # CRUD & Search logic
-├── shared_notes/                       # Collaboration Engine
-│   ├── __init__.py
-│   ├── apps.py
+│   ├── migrations/
+│   ├── filters.py                      # Advanced filter backends
+│   ├── models.py                       # Note and Tag schemas
+│   ├── serializers.py                  # Nested Note/Tag serializers
+│   ├── tests.py                        # Full notes API test suite
+│   ├── urls.py                         # Notes workspace routing
+│   └── views.py                        # CRUD + Pin/Archive/Share handlers
+├── shared_notes/                       # Public Sharing Module
+│   ├── migrations/
+│   ├── models.py                       # SharedNoteAccess log
 │   ├── urls.py                         # Public sharing routing
-│   └── views.py                        # Anonymous access logic
-├── core/                               # Main Project Config
-│   ├── __init__.py
-│   ├── settings.py                     # Security, Auth, and AI settings
-│   ├── urls.py                         # Root API routing table
-│   ├── wsgi.py                         # Sync server gateway
-│   └── asgi.py                         # Async server gateway
-├── .env                                # Private Configuration (Private)
-├── db.sqlite3                          # Local database file
-├── manage.py                           # Django CLI management
-├── requirements.txt                    # Project dependencies
-└── PHASE_1_SUMMARY.txt                 # Archival phase summary
+│   └── views.py                        # Anonymous read-only access + logging
+├── core/                               # Project Configuration
+│   ├── settings.py                     # All environment-aware settings
+│   ├── urls.py                         # Root API URL table
+│   ├── wsgi.py                         # Gunicorn/WSGI entry
+│   └── asgi.py                         # ASGI entry
+├── .env                                # Your local secrets (gitignored)
+├── .env.example                        # Template — safe to commit
+├── Procfile                            # Render/Railway deployment command
+├── manage.py                           # Django management CLI
+└── requirements.txt                    # All Python dependencies
 ```
 
 ---
 
-## ⚡ Setup & Installation
+## ⚡ Quick Start (Local Development)
 
-### 1. Backend
+### Prerequisites
+- Python 3.10+
+- Node.js 18+
+- A free Gemini API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
+
+### 1. Backend Setup
+```powershell
+# Navigate to backend
+cd backend
+
+# Create and activate virtual environment
+python -m venv ../venv
+..\venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment
+cp .env.example .env
+# ← Edit .env and add your GEMINI_API_KEY
+
+# Initialize database
+python manage.py migrate
+
+# Run development server
+python manage.py runserver
+# ✅ Backend running at http://localhost:8000
+```
+
+### 2. Frontend Setup
+```powershell
+# Navigate to frontend
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
+# ✅ Frontend running at http://localhost:5173
+```
+
+---
+
+## 🔑 Environment Variables
+
+### Backend (`backend/.env`)
+```env
+SECRET_KEY=your-strong-random-secret-key
+DEBUG=True
+
+# Database (SQLite for local, PostgreSQL for production)
+DATABASE_URL=sqlite:///db.sqlite3
+
+# AI Provider (gemini is free!)
+AI_PROVIDER=gemini
+GEMINI_API_KEY=your-google-ai-studio-key
+
+# CORS & Hosts
+ALLOWED_HOSTS=localhost,127.0.0.1
+CORS_ALLOWED_ORIGINS=http://localhost:5173
+```
+
+### Frontend (`frontend/.env`)
+```env
+VITE_API_URL=http://localhost:8000/api
+```
+
+---
+
+## 🌐 API Endpoints
+
+### Authentication
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/auth/signup/` | Register new user |
+| POST | `/api/auth/login/` | Login + get JWT tokens |
+| POST | `/api/auth/logout/` | Blacklist refresh token |
+| GET/PATCH | `/api/auth/profile/` | View/update user profile |
+| POST | `/api/auth/token/refresh/` | Refresh access token |
+
+### Notes
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/notes/notes/` | List all notes (with search/filter) |
+| POST | `/api/notes/notes/` | Create a new note |
+| GET | `/api/notes/notes/:id/` | Get single note |
+| PATCH | `/api/notes/notes/:id/` | Update note |
+| DELETE | `/api/notes/notes/:id/` | Delete note |
+| POST | `/api/notes/notes/:id/pin/` | Toggle pin |
+| POST | `/api/notes/notes/:id/archive/` | Archive note |
+| POST | `/api/notes/notes/:id/share/` | Generate public link |
+| POST | `/api/notes/notes/:id/unshare/` | Revoke public link |
+
+### AI Features
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/ai/notes/:id/generate-summary/` | Generate AI summary |
+| POST | `/api/ai/notes/:id/extract-actions/` | Extract action items |
+| POST | `/api/ai/notes/:id/suggest-title/` | Suggest a title |
+| GET | `/api/ai/history/` | View AI usage log |
+
+### Analytics
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/analytics/dashboard/` | Get 7-day productivity stats |
+
+### Public Sharing
+| Method | Endpoint | Auth Required |
+|---|---|---|
+| GET | `/api/shared/:share_id/` | ❌ No |
+
+---
+
+## 🚀 Deployment
+
+### Frontend → Netlify
+
+1. Connect your GitHub repo to Netlify.
+2. Set **Build command**: `npm run build`
+3. Set **Publish directory**: `dist`
+4. Set **Base directory**: `frontend`
+5. Add environment variable: `VITE_API_URL=https://your-backend.onrender.com/api`
+6. The `netlify.toml` file handles SPA routing automatically.
+
+### Backend → Render
+
+1. Create a new **Web Service** on [Render](https://render.com).
+2. Connect your GitHub repo.
+3. Set **Build Command**: `pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput`
+4. Set **Start Command**: `gunicorn core.wsgi --log-file -`
+5. Set **Root Directory**: `backend`
+6. Add all environment variables from `.env.example` (with production values).
+
+---
+
+## 🧪 Testing
+
+### Run backend tests
 ```powershell
 cd backend
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
+..\venv\Scripts\activate
+python manage.py test authentication notes --verbosity=2
 ```
 
-### 2. Frontend
-```powershell
-cd frontend
-npm install
-npm run dev
-```
-
----
-
-## 🔑 Environment Configuration
-Create a `.env` in the `/backend` folder:
-```env
-DEBUG=True
-SECRET_KEY=your_django_key
-DATABASE_URL=sqlite:///db.sqlite3
-AI_PROVIDER=gemini
-GEMINI_API_KEY=your_google_ai_key
-```
+**12 tests covering:**
+- ✅ User registration and validation
+- ✅ Login and JWT token issuance
+- ✅ Notes CRUD operations
+- ✅ Public note sharing workflow
+- ✅ Pin and archive actions
+- ✅ Unauthenticated access protection
 
 ---
 
 ## 📊 Roadmap
-- [x] Part 1: Core Notes Workspace
-- [x] Part 2: Tagging & UI System
-- [x] Part 3: AI Intelligence & Dashboard
-- [ ] Part 4: Public Sharing & Deployment
+
+- [x] **Part 1** — Core Notes Workspace & JWT Authentication
+- [x] **Part 2** — Tagging System & UI Design System
+- [x] **Part 3** — Gemini AI Integration & Analytics Dashboard
+- [x] **Part 4** — Public Sharing, Deployment Preparation & Production Polish
+- [ ] **Future** — Collaborative editing, mobile app, note templates
+
+---
+
+## 👤 Author
+
+Built by **Mohith Reddy** as a full-stack SaaS engineering portfolio project.
+
+---
+
+## 📄 License
+
+MIT License — free to use, modify, and distribute.
