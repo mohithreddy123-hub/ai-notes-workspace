@@ -185,10 +185,16 @@ SIMPLE_JWT = {
 }
 
 # ── CORS ─────────────────────────────────────────────────────────────────────────
-CORS_ALLOWED_ORIGINS = os.environ.get(
+_cors_origins = os.environ.get(
     'CORS_ALLOWED_ORIGINS',
     'http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173'
-).split(',')
+)
+# Also allow FRONTEND_URL if set separately
+_frontend_url = os.environ.get('FRONTEND_URL', '')
+if _frontend_url and _frontend_url not in _cors_origins:
+    _cors_origins += ',' + _frontend_url
+
+CORS_ALLOWED_ORIGINS = [o.strip().rstrip('/') for o in _cors_origins.split(',') if o.strip()]
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -228,6 +234,9 @@ if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
-    SECURE_SSL_REDIRECT = True
+    # NOTE: Do NOT set SECURE_SSL_REDIRECT=True on Render
+    # Render handles SSL termination at the load balancer level.
+    # Setting this causes infinite redirect loops.
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
