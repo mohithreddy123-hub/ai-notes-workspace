@@ -1,6 +1,6 @@
 from django.urls import path
-from notes.views import PublicNoteView
+from .views import SharedNoteDetailView
 
 urlpatterns = [
-    path('<uuid:share_id>/', PublicNoteView.as_view(), name='shared-note-public'),
+    path('<uuid:share_id>/', SharedNoteDetailView.as_view(), name='shared-note-public'),
 ]
