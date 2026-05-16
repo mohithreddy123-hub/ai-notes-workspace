@@ -1,20 +1,29 @@
-import React from 'react';
+import { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ProtectedRoute, PublicRoute } from './RouteWrappers';
-import AppLayout from '../layouts/AppLayout';
-import ErrorBoundary from '../components/ErrorBoundary';
 import { ROUTES } from '../utils/constants';
+import { Loader2 } from 'lucide-react';
 
-// Pages
-import Login from '../pages/auth/Login';
-import Signup from '../pages/auth/Signup';
-import NotesList from '../pages/notes/NotesList';
-import Dashboard from '../pages/dashboard/Dashboard';
-import NotFound from '../pages/NotFound';
+// Lazy-loaded pages for code splitting
+const AppLayout = lazy(() => import('../layouts/AppLayout'));
+const ErrorBoundary = lazy(() => import('../components/ErrorBoundary'));
+const Login = lazy(() => import('../pages/auth/Login'));
+const Signup = lazy(() => import('../pages/auth/Signup'));
+const NotesList = lazy(() => import('../pages/notes/NotesList'));
+const Dashboard = lazy(() => import('../pages/dashboard/Dashboard'));
+const SharedNotePage = lazy(() => import('../pages/shared/SharedNotePage'));
+const NotFound = lazy(() => import('../pages/NotFound'));
+
+// Full-screen loading fallback
+const PageLoader = () => (
+  <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
+    <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
+  </div>
+);
 
 const AppRoutes = () => {
   return (
-    <ErrorBoundary>
+    <Suspense fallback={<PageLoader />}>
       <Routes>
         {/* Public Auth Routes */}
         <Route element={<PublicRoute />}>
@@ -30,20 +39,25 @@ const AppRoutes = () => {
           <Route element={<AppLayout />}>
             <Route path="notes" element={<NotesList />} />
             <Route path="dashboard" element={<Dashboard />} />
-            <Route path="settings" element={<div className="p-6 text-slate-500 dark:text-slate-400">Settings (Phase 4)</div>} />
+            <Route path="settings" element={
+              <div className="p-8 text-center text-slate-400 dark:text-slate-500">
+                <p className="text-lg font-medium">Settings</p>
+                <p className="text-sm mt-1">Coming in next release.</p>
+              </div>
+            } />
             {/* Default redirect to notes */}
             <Route index element={<Navigate to="notes" replace />} />
           </Route>
         </Route>
 
-        {/* Public Share Route (Phase 4) */}
-        <Route path={ROUTES.SHARED} element={<div className="p-6">Public Note View</div>} />
+        {/* Public Shared Note Route — NO auth required */}
+        <Route path="/shared/:shareId" element={<SharedNotePage />} />
 
         {/* 404 Fallback */}
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
-    </ErrorBoundary>
+    </Suspense>
   );
 };
 
