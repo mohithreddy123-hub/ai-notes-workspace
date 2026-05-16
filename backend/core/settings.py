@@ -18,11 +18,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 from django.core.exceptions import ImproperlyConfigured
 
 REQUIRED_ENV_VARS = ['SECRET_KEY']
-# Add keys required for specific features
-if os.environ.get('AI_PROVIDER') == 'openai':
-    REQUIRED_ENV_VARS.append('OPENAI_API_KEY')
-elif os.environ.get('AI_PROVIDER', 'gemini') == 'gemini':
-    REQUIRED_ENV_VARS.append('GEMINI_API_KEY')
+# Only require AI keys in non-test environments
+import sys
+IS_TESTING = 'test' in sys.argv or 'pytest' in sys.modules
+if not IS_TESTING:
+    if os.environ.get('AI_PROVIDER') == 'openai':
+        REQUIRED_ENV_VARS.append('OPENAI_API_KEY')
+    elif os.environ.get('AI_PROVIDER', 'gemini') == 'gemini':
+        REQUIRED_ENV_VARS.append('GEMINI_API_KEY')
 
 for var in REQUIRED_ENV_VARS:
     if not os.environ.get(var):
@@ -31,7 +34,10 @@ for var in REQUIRED_ENV_VARS:
 # Security
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-dev-key-change-in-production-!@#$%^&*()')
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,0.0.0.0').split(',')
+ALLOWED_HOSTS = os.environ.get(
+    'ALLOWED_HOSTS',
+    'localhost,127.0.0.1,0.0.0.0,.onrender.com,.railway.app'
+).split(',')
 
 # Application definition
 DJANGO_APPS = [

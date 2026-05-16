@@ -3,19 +3,28 @@ venv/
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyo
+
+# Environment — never commit secrets
 .env
+# .env.example is safe to commit
+
+# Django
 db.sqlite3
 media/
-static/
+staticfiles/
+*.log
 
 # Node
 node_modules/
 dist/
 .eslintcache
+frontend/.env
 
 # IDEs
 .vscode/
 .idea/
+*.suo
 
 # OS
 .DS_Store
