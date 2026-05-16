@@ -3,10 +3,11 @@ import { useNote, useUpdateNote, usePinNote, useArchiveNote, useDeleteNote } fro
 import { useAutoSave } from '../../hooks/useAutoSave';
 import { useGenerateSummary, useExtractActionItems, useSuggestTitle } from '../../hooks/useAI';
 import { Skeleton } from '../ui/Feedback';
+import ShareModal from './ShareModal';
 import { 
   X, Pin, Archive, Trash2, Tag as TagIcon,
   CheckCircle2, Clock, Sparkles, LayoutList, AlignLeft,
-  ChevronDown, ChevronRight, Copy, Check
+  ChevronDown, ChevronRight, Copy, Check, Share2, Globe
 } from 'lucide-react';
 import { formatDistanceToNow, format } from 'date-fns';
 import TagSelector from './TagSelector';
@@ -99,6 +100,8 @@ const NoteEditor = ({ noteId, onClose, tags: allTags }) => {
   const [content, setContent] = useState('');
   const [showTagSelector, setShowTagSelector] = useState(false);
   const [showAIToolbar, setShowAIToolbar] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
   const titleRef = useRef(null);
 
   // Sync from server data
@@ -141,6 +144,19 @@ const NoteEditor = ({ noteId, onClose, tags: allTags }) => {
   const handleArchive = async () => {
     await archiveNote.mutateAsync(note.id);
     onClose();
+  };
+
+  const handleShare = async () => {
+    const result = await shareNote.mutateAsync();
+    const url = `${window.location.origin}/shared/${result.share_id}`;
+    navigator.clipboard.writeText(url);
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 3000);
+    toast.success('Public link copied to clipboard!');
+  };
+
+  const handleUnshare = async () => {
+    await unshareNote.mutateAsync();
   };
 
   const applySuggestedTitle = async () => {
@@ -250,6 +266,26 @@ const NoteEditor = ({ noteId, onClose, tags: allTags }) => {
               title={note.is_pinned ? 'Unpin' : 'Pin'}
             >
               <Pin className={`w-4 h-4 ${note.is_pinned ? 'fill-brand-500' : ''}`} />
+            </button>
+
+            {/* Share — opens Google Drive style dialog */}
+            <button
+              onClick={() => setShowShareModal(true)}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                note.share_id
+                  ? 'text-emerald-600 bg-emerald-50 hover:bg-emerald-100 dark:text-emerald-400 dark:bg-emerald-500/10 dark:hover:bg-emerald-500/20'
+                  : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+              title="Manage sharing"
+            >
+              {note.share_id ? (
+                <Globe className="w-3.5 h-3.5" />
+              ) : (
+                <Share2 className="w-3.5 h-3.5" />
+              )}
+              <span className="hidden sm:inline">
+                {note.share_id ? 'Shared' : 'Share'}
+              </span>
             </button>
 
             {/* Archive */}
@@ -413,6 +449,14 @@ const NoteEditor = ({ noteId, onClose, tags: allTags }) => {
         </span>
       </div>
     </div>
+
+      {/* Share Modal */}
+      {showShareModal && note && (
+        <ShareModal
+          note={note}
+          onClose={() => setShowShareModal(false)}
+        />
+      )}
   );
 };
 
