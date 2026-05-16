@@ -70,7 +70,6 @@ class GroqClient:
     """Groq AI — free, fast, OpenAI-compatible. Uses Llama 3.1."""
 
     MODEL = 'llama-3.1-8b-instant'
-
     def __init__(self):
         from groq import Groq
         api_key = getattr(settings, 'GROQ_API_KEY', '')
