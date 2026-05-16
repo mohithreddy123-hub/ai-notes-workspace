@@ -182,6 +182,7 @@ const NoteEditor = ({ noteId, onClose, tags: allTags }) => {
   const isAILoading = generateSummary.isPending || extractActions.isPending || suggestTitle.isPending;
 
   return (
+    <>
     <div className="flex-1 flex flex-col h-full bg-white dark:bg-slate-900 min-w-0">
       {/* Editor Toolbar */}
       <div className="flex flex-col border-b border-slate-200 dark:border-slate-800 shrink-0 bg-white dark:bg-slate-900 sticky top-0 z-10">
@@ -450,13 +451,14 @@ const NoteEditor = ({ noteId, onClose, tags: allTags }) => {
       </div>
     </div>
 
-      {/* Share Modal */}
-      {showShareModal && note && (
-        <ShareModal
-          note={note}
-          onClose={() => setShowShareModal(false)}
-        />
-      )}
+    {/* Share Modal */}
+    {showShareModal && note && (
+      <ShareModal
+        note={note}
+        onClose={() => setShowShareModal(false)}
+      />
+    )}
+    </>
   );
 };
 
