@@ -213,7 +213,8 @@ CORS_ALLOW_HEADERS = [
 # ── AI Configuration ──────────────────────────────────────────────────────────
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', '')
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
-AI_PROVIDER = os.environ.get('AI_PROVIDER', 'gemini')  # 'openai' or 'gemini'
+GROQ_API_KEY = os.environ.get('GROQ_API_KEY', '')
+AI_PROVIDER = os.environ.get('AI_PROVIDER', 'groq')  # 'gemini', 'groq', or 'openai'
 
 # ── Redis / Caching ────────────────────────────────────────────────────────────
 REDIS_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')

@@ -16,6 +16,8 @@ class AIProvider:
         provider = provider or settings.AI_PROVIDER
         if provider == 'openai':
             return OpenAIClient()
+        if provider == 'groq':
+            return GroqClient()
         return GeminiClient()
 
 
@@ -59,6 +61,53 @@ class GeminiClient:
                 'total_tokens': 0,
                 'latency_ms': latency_ms,
                 'provider': 'gemini',
+                'success': False,
+                'error': str(e),
+            }
+
+
+class GroqClient:
+    """Groq AI — free, fast, OpenAI-compatible. Uses Llama 3.1."""
+
+    MODEL = 'llama-3.1-8b-instant'
+
+    def __init__(self):
+        from groq import Groq
+        api_key = getattr(settings, 'GROQ_API_KEY', '')
+        if not api_key:
+            raise ValueError('GROQ_API_KEY is not configured.')
+        self.client = Groq(api_key=api_key)
+
+    def generate(self, prompt: str) -> dict:
+        start = time.time()
+        try:
+            response = self.client.chat.completions.create(
+                model=self.MODEL,
+                messages=[{'role': 'user', 'content': prompt}],
+                max_tokens=1000,
+                temperature=0.7,
+            )
+            latency_ms = int((time.time() - start) * 1000)
+            text = response.choices[0].message.content.strip()
+            usage = response.usage
+            return {
+                'text': text,
+                'input_tokens': usage.prompt_tokens,
+                'output_tokens': usage.completion_tokens,
+                'total_tokens': usage.total_tokens,
+                'latency_ms': latency_ms,
+                'provider': 'groq',
+                'success': True,
+            }
+        except Exception as e:
+            latency_ms = int((time.time() - start) * 1000)
+            return {
+                'text': '',
+                'input_tokens': 0,
+                'output_tokens': 0,
+                'total_tokens': 0,
+                'latency_ms': latency_ms,
+                'provider': 'groq',
                 'success': False,
                 'error': str(e),
             }
