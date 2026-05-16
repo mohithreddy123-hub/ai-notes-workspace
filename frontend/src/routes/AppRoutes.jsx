@@ -9,6 +9,7 @@ const AppLayout = lazy(() => import('../layouts/AppLayout'));
 const ErrorBoundary = lazy(() => import('../components/ErrorBoundary'));
 const Login = lazy(() => import('../pages/auth/Login'));
 const Signup = lazy(() => import('../pages/auth/Signup'));
+const LandingPage = lazy(() => import('../pages/LandingPage'));
 const NotesList = lazy(() => import('../pages/notes/NotesList'));
 const Dashboard = lazy(() => import('../pages/dashboard/Dashboard'));
 const SharedNotePage = lazy(() => import('../pages/shared/SharedNotePage'));
@@ -31,8 +32,8 @@ const AppRoutes = () => {
           <Route path={ROUTES.SIGNUP} element={<Signup />} />
         </Route>
 
-        {/* Root Redirect */}
-        <Route path="/" element={<Navigate to={ROUTES.APP.BASE} replace />} />
+        {/* Root — Landing Page */}
+        <Route path="/" element={<LandingPage />} />
 
         {/* Protected App Routes */}
         <Route path={ROUTES.APP.BASE} element={<ProtectedRoute />}>
