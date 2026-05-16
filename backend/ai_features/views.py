@@ -4,6 +4,7 @@ Each endpoint logs usage to AIUsageLog for analytics.
 """
 
 import json
+from django.conf import settings
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -32,8 +33,8 @@ def _run_ai_operation(request, note_id: str, operation: str):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
-    # Allow user to override AI provider per-request
-    provider_name = request.data.get('provider') or request.user.ai_provider_preference
+    # Use global AI_PROVIDER setting — user preference only overrides if explicitly passed in request
+    provider_name = request.data.get('provider') or settings.AI_PROVIDER
     try:
         client = AIProvider.get_client(provider_name)
     except ValueError as e:

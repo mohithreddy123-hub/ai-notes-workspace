@@ -49,8 +49,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     ai_provider_preference = models.CharField(
         max_length=20,
-        choices=[('openai', 'OpenAI'), ('gemini', 'Gemini')],
-        default='gemini'
+        choices=[('openai', 'OpenAI'), ('gemini', 'Gemini'), ('groq', 'Groq')],
+        default='groq'
     )
 
     # Account flags
