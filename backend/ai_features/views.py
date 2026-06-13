@@ -33,8 +33,12 @@ def _run_ai_operation(request, note_id: str, operation: str):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
-    # Use global AI_PROVIDER setting — user preference only overrides if explicitly passed in request
-    provider_name = request.data.get('provider') or settings.AI_PROVIDER
+    # Use requested provider, user's preference, or fall back to global settings
+    provider_name = (
+        request.data.get('provider') or
+        getattr(request.user, 'ai_provider_preference', None) or
+        settings.AI_PROVIDER
+    )
     try:
         client = AIProvider.get_client(provider_name)
     except ValueError as e:

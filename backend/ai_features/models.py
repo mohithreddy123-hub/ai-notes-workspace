@@ -22,6 +22,7 @@ class AIUsageLog(models.Model):
     class Provider(models.TextChoices):
         OPENAI = 'openai', 'OpenAI'
         GEMINI = 'gemini', 'Gemini'
+        GROQ = 'groq', 'Groq'
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
