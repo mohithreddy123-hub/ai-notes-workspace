@@ -14,6 +14,7 @@ const NotesList = lazy(() => import('../pages/notes/NotesList'));
 const Dashboard = lazy(() => import('../pages/dashboard/Dashboard'));
 const SharedNotePage = lazy(() => import('../pages/shared/SharedNotePage'));
 const NotFound = lazy(() => import('../pages/NotFound'));
+const SettingsPage = lazy(() => import('../pages/settings/SettingsPage'));
 
 // Full-screen loading fallback
 const PageLoader = () => (
@@ -40,12 +41,7 @@ const AppRoutes = () => {
           <Route element={<AppLayout />}>
             <Route path="notes" element={<NotesList />} />
             <Route path="dashboard" element={<Dashboard />} />
-            <Route path="settings" element={
-              <div className="p-8 text-center text-slate-400 dark:text-slate-500">
-                <p className="text-lg font-medium">Settings</p>
-                <p className="text-sm mt-1">Coming in next release.</p>
-              </div>
-            } />
+            <Route path="settings" element={<SettingsPage />} />
             {/* Default redirect to notes */}
             <Route index element={<Navigate to="notes" replace />} />
           </Route>
