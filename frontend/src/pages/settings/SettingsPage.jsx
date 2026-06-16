@@ -9,6 +9,7 @@ import {
   ChevronRight,
   Sun,
   Moon,
+
   Bot,
   Lock,
   Save,
@@ -23,9 +24,9 @@ import { API_ROUTES } from '../../utils/constants';
 
 /* ─── Sidebar navigation items ─────────────────────────────── */
 const SECTIONS = [
-  { id: 'profile',     label: 'My Profile',   icon: User },
-  { id: 'preferences', label: 'Preferences',  icon: Palette },
-  { id: 'security',    label: 'Security',      icon: Shield },
+  { id: 'profile', label: 'My Profile', icon: User },
+  { id: 'preferences', label: 'Preferences', icon: Palette },
+  { id: 'security', label: 'Security', icon: Shield },
 ];
 
 /* ─── Reusable field wrapper ────────────────────────────────── */
@@ -284,21 +285,19 @@ const PreferencesSection = () => {
           <div className="flex items-center gap-3">
             <button
               onClick={() => handleThemeToggle(false)}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
-                !darkMode
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${!darkMode
                   ? 'border-brand-500 bg-brand-50 text-brand-700 dark:bg-brand-500/10 dark:text-brand-300 dark:border-brand-400'
                   : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-300'
-              }`}
+                }`}
             >
               <Sun className="w-3.5 h-3.5" /> Light
             </button>
             <button
               onClick={() => handleThemeToggle(true)}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
-                darkMode
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${darkMode
                   ? 'border-brand-500 bg-brand-50 text-brand-700 dark:bg-brand-500/10 dark:text-brand-300 dark:border-brand-400'
                   : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-300'
-              }`}
+                }`}
             >
               <Moon className="w-3.5 h-3.5" /> Dark
             </button>

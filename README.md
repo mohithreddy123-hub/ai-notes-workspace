@@ -37,7 +37,7 @@
 | **Google Generative AI** | Gemini AI integration |
 | **WhiteNoise** | Static file serving in production |
 | **Gunicorn** | Production WSGI server |
-| **SQLite / PostgreSQL** | Dev / Production database |
+| **SQLite / MySQL** | Dev / Production database |
 | **dj-database-url** | Database URL parsing |
 
 ### Frontend
@@ -67,7 +67,7 @@
                                        [Django + DRF]
                                               │
                               ┌───────────────┴──────────────┐
-                         [PostgreSQL]               [Gemini AI API]
+                         [MySQL]                    [Gemini AI API]
                          (Production DB)            (AI Operations)
 ```
 
@@ -111,6 +111,8 @@ frontend/
 │   │   │   └── Dashboard.jsx           # Analytics + productivity charts
 │   │   ├── notes/
 │   │   │   └── NotesList.jsx           # Main workspace (note grid)
+│   │   ├── settings/
+│   │   │   └── SettingsPage.jsx        # User profile, preferences, and security settings
 │   │   ├── shared/
 │   │   │   └── SharedNotePage.jsx      # Public read-only note view
 │   │   └── NotFound.jsx                # 404 handler
@@ -236,7 +238,7 @@ npm run dev
 SECRET_KEY=your-strong-random-secret-key
 DEBUG=True
 
-# Database (SQLite for local, PostgreSQL for production)
+# Database (SQLite for local, MySQL for production)
 DATABASE_URL=sqlite:///db.sqlite3
 
 # AI Provider (gemini is free!)
